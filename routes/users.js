@@ -19,4 +19,34 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/login', async (req, res) => {
+
+    const { email, password } = req.body
+
+    try {
+        let user = await User.find({ email })
+
+        if (!user) {
+            console.log('no user found')
+            return
+        }
+
+        // const isMatch = await bcrypt.compare(password, user.password)
+
+        // if (!isMatch) {
+        //     console.log('Wrong password')
+        //     return res.status(400).json({ errors: [{ message: 'Wrong password' }] })
+        // }
+
+        res.status(201).json({ data: user })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+router.post('/register', async (req, res) => {
+
+})
+
+
 module.exports = router;

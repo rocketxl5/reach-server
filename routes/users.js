@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 
 router.post('/login', async (req, res) => {
 
-    const { email, password } = req.body
+    const { email, password } = await req.body
 
     try {
         let user = await User.find({ email })
@@ -45,7 +45,14 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
+    const { name, email, password } = await req.body
 
+    try {
+
+        res.status(201).json({ data: user })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
 })
 
 

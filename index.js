@@ -1,4 +1,5 @@
 const express = require('express')
+const compression = require('compression')
 const connectDB = require('./config/db.js')
 require('dotenv').config()
 
@@ -9,11 +10,15 @@ connectDB()
 
 // Middlewares
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://reach-iqo7.onrender.com")
+    res.header("Access-Control-Allow-Origin", process.env.ORIGIN)
     req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     req.header("Access-Control-Allow-Methods", "*")
     next()
 })
+
+app.use(compression())
+
+// console.log(process.env)
 
 app.use(express.json())
 

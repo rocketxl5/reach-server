@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+// const bodyParser = require('body-parser')
 const compression = require('compression')
 const connectDB = require('./config/db')
 require('dotenv').config()
@@ -10,6 +11,8 @@ connectDB()
 
 // Middlewares
 app.use(cors({ origin: '*', credentials: true }))
+
+app.use(express.urlencoded({ extended: false }))
 
 app.use(express.json())
 

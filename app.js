@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 5001
 connectDB()
 
 // Middlewares
-app.use(cors({ origin: '*', credentials: true }))
+// app.use(cors({ origin: '*', credentials: true }))
 
-app.use(express.urlencoded({ extended: false }))
+// app.use(express.urlencoded({ extended: false }))
 
 app.use(express.json())
 

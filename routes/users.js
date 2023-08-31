@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
             console.log('no user found')
             return
         }
-
+        // console.log(user)
         // const isMatch = await bcrypt.compare(password, user.password)
 
         // if (!isMatch) {
@@ -38,7 +38,15 @@ router.post('/login', async (req, res) => {
         //     return res.status(400).json({ errors: [{ message: 'Wrong password' }] })
         // }
 
-        res.status(201).json({ data: user })
+        const setResponse = user => {
+            if (user) {
+                res.status(201).json({ data: user })
+            }
+        }
+
+        await setResponse(user)
+
+
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

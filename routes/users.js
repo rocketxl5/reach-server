@@ -38,14 +38,14 @@ router.post('/login', async (req, res) => {
         //     return res.status(400).json({ errors: [{ message: 'Wrong password' }] })
         // }
 
-        const setResponse = user => {
-            if (user) {
-                res.status(201).json({ data: user })
-            }
-        }
+        // const setResponse = user => {
+        //     if (user) {
+        //         res.status(201).json({ data: user })
+        //     }
+        // }
 
-        await setResponse(user)
-
+        // await setResponse(user)
+        res.status(201).json({ data: user })
 
     } catch (error) {
         res.status(500).json({ message: error.message })

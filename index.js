@@ -15,7 +15,7 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use(compression())
+// app.use(compression())
 
 app.use(express.json())
 

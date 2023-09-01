@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors')
-// const bodyParser = require('body-parser')
 const compression = require('compression')
 const connectDB = require('./config/db')
 require('dotenv').config()
@@ -10,18 +9,9 @@ const PORT = process.env.PORT || 5001
 connectDB()
 
 // Middlewares
-app.use(cors({ origin: process.env.ORIGIN, credentials: true }))
-
-// app.use(express.urlencoded({ extended: false }))
+app.use(cors({ origin: '*', credentials: true }))
 
 app.use(express.json())
-
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", process.env.ORIGIN)
-//     req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-//     req.header("Access-Control-Allow-Methods", "*")
-//     next()
-// })
 
 // app.use(compression())
 

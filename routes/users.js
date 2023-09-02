@@ -3,10 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User');
-// const {body, validationResult} = require('express-validator')
-// const authentication = require('../middleware/authentication')
-
-
+const { body, validationResult } = require('express-validator');
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -19,16 +16,26 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/login', async (req, res) => {
 
-    const { email } = await req.body
+
+router.post('/login',
+    body('email').not().isEmpty(),
+    body('password').isLength({ min: 3 }),
+    async (req, res) => {
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { email, password } = await req.body;
 
     try {
         let user = await User.findOne({ email })
 
         if (!user) {
-            console.log('no user found')
-            return
+            throw new Error('Please provide a valid email address and password.')
         }
         // console.log(user)
         // const isMatch = await bcrypt.compare(password, user.password)
@@ -41,16 +48,17 @@ router.post('/login', async (req, res) => {
         res.status(201).json({ data: user })
 
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json(error.message)
     }
 })
 
-router.post('/register', async (req, res) => {
-    const { name, email, password } = await req.body
+router.post('/register',
+    async (req, res) => {
+        const { username, email, password } = await req.body
 
     try {
 
-        res.status(201).json({ data: user })
+        res.status(201).json({ data: username })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

@@ -23,21 +23,22 @@ router.post('/login',
     body('password').isLength({ min: 3 }),
     async (req, res) => {
 
-        const errors = validationResult(req);
+        const errors = validationResult(req);   
 
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
         const { email, password } = await req.body;
+        const error = { message: 'Please provide a valid email address and password.' }
 
     try {
-        let user = await User.findOne({ email })
+        const user = await User.findOne({ email })
 
         if (!user) {
-            throw new Error('Please provide a valid email address and password.')
+            throw new Error(error.message)
         }
-        // console.log(user)
+
         // const isMatch = await bcrypt.compare(password, user.password)
 
         // if (!isMatch) {
@@ -45,7 +46,12 @@ router.post('/login',
         //     return res.status(400).json({ errors: [{ message: 'Wrong password' }] })
         // }
 
-        res.status(201).json({ data: user })
+        const rest = (user) => {
+            const { username, email, messages } = user
+            return { username, email, messages }
+        }
+
+        res.status(201).json(rest(user))
 
     } catch (error) {
         res.status(500).json(error.message)

@@ -4,12 +4,14 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         trim: true,
+        maxLength: 20,
         required: true
     }, 
     email: {
         type: String,
         trim: true,
-        requred: true
+        maxLength: 255,
+        required: true
     },
     password: {
         type: String,
@@ -24,8 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     joined: {
         type: Date,
-        required: true,
-        dafault: Date.now
+        required: true
     }
 })
 

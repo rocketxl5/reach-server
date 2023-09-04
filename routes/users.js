@@ -44,12 +44,12 @@ router.post('/login',
             throw new Error(messages.error.input)
         }
 
-        // const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compare(password, user.password)
 
-        // if (!isMatch) {
-        //     console.log('Wrong password')
-        //     return res.status(400).json({ errors: [{ message: 'Wrong password' }] })
-        // }
+        if (!isMatch) {
+            console.log('Wrong password')
+            return res.status(400).json({ errors: [{ message: 'Wrong password' }] })
+        }
 
         const rest = (user) => {
             const { username, email, messages } = user

@@ -20,13 +20,15 @@ router.get('/', async (req, res) => {
 
 router.post('/login',
     body('email').not().isEmpty(),
-    body('password').isLength({ min: 3 }),
+    body('password').isLength({ min: 3 }).withMessage('Password must have eight characters')
+    ,
     async (req, res) => {
 
         const errors = validationResult(req);   
 
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            errors.array()
+            // return res.status(400).json({ errors: errors.array() });
         }
 
         const { email, password } = await req.body;
@@ -41,14 +43,19 @@ router.post('/login',
         const user = await User.findOne({ email })
 
         if (!user) {
-            throw new Error(messages.error.input)
+            console.log('Wrong email')
+            return res.status(400).json(messages.error.input)
         }
 
-        const isMatch = await bcrypt.compare(password, user.password)
+        try {
+            const isMatch = await bcrypt.compare(password, user.password)
 
-        if (!isMatch) {
-            console.log('Wrong password')
-            return res.status(400).json({ errors: [{ message: 'Wrong password' }] })
+            if (!isMatch) {
+                console.log('Wrong password')
+                return res.status(400).json(messages.error.input)
+            }
+        } catch (error) {
+            throw new Error(error)
         }
 
         const rest = (user) => {

@@ -99,21 +99,28 @@ router.post('/signup', async (req, res) => {
             throw new Error(messages.error.email)
         }
 
-        const newUser = new User({
-            username,
-            email,
-            password,
-            joined: Date.now()
-        })
+        if (password) {
+            const newUser = new User({
+                username,
+                email,
+                password,
+                joined: Date.now()
+            })
+            // Hash Password
+            const salt = await bcrypt.genSalt(10);
+            newUser.password = await bcrypt.hash(password, salt);
 
-        // Hash Password
-        const salt = await bcrypt.genSalt(10);
-        newUser.password = await bcrypt.hash(password, salt);
+
+            await newUser.save()
+
+            res.status(200).json({ message: 'success' })
+        } else {
+            throw new Error('Password do not match')
+        }
 
 
-        await newUser.save()
 
-        res.status(200).json({ message: 'success' })
+
     } catch (error) {
         res.status(500).json(error.message);
     }
